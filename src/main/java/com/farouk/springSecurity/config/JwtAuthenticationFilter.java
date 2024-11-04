@@ -1,5 +1,6 @@
 package com.farouk.springSecurity.config;
 
+import com.farouk.springSecurity.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
     private final UserDetailsService userDetailsService;
+
+    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(
@@ -48,7 +51,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
             // Check the user existence in the database
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(jwt,userDetails)){
+            var isTokenValid = tokenRepository.findByToken(jwt)
+                    .map( t -> !t.isExpired() && !t.isRevoked())
+                    .orElse(false);
+            if (jwtService.isTokenValid(jwt,userDetails) && isTokenValid){
                 // needed by spring security to update the SecurityContextHolder
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
