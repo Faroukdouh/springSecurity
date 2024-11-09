@@ -22,14 +22,12 @@ spring:
       #org.springframework.web: DEBUG
 
 application:
-  security:
-    jwt:
-      secret-key: 7f8a824bdc34f40c2f079da6a212dd947fe93f0deb0491229d5f000884331571
-      expiration: 60000  # 86400000 a day
-      refresh-token:
-        expiration: 120000 # 7 days
-
-
+    security:
+      jwt:
+          secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+          expiration: 86400000 # a day      60000   1minute
+          refresh-token:
+            expiration: 604800000 # 7 days     120000 2minute
 
 
 
