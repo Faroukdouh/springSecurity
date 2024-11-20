@@ -30,8 +30,8 @@ public class SpringSecurityApplication {
 			System.out.println("Admin token: " + service.register(admin).getAccessToken());
 
 			var manager = RegisterRequest.builder()
-					.firstname("Admin")
-					.lastname("Admin")
+					.firstname("manager")
+					.lastname("manager")
 					.email("manager@mail.com")
 					.password("1234")
 					.role(Role.MANAGER)
